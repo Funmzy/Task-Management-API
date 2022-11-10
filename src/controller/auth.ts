@@ -15,7 +15,7 @@ const generateToken = (email: string) => {
   };
 
 
-  export const signup = async(req: Request, res: Response, next: NextFunction) => {
+  export const signup = async(req: Request, res: Response) => {
     try{
 
         const newUser = await User.create({
@@ -37,7 +37,7 @@ const generateToken = (email: string) => {
 };
 
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (req: Request, res: Response) => {
     //check if user submitted email and password
     const { email, password } = req.body;
     if (!email || !password) {
@@ -82,7 +82,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       })
     }
   
-    const decodedToken: any = jwt.verify(token as string, process.env.JWT_SECRET_KEY as string);
+    const decodedToken: any = jwt.verify(token as string, config.JWT_SECRET_KEY as string);
     const user = await User.findOne({ email: decodedToken.email });
     req.user = user;
   

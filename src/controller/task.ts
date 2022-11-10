@@ -1,22 +1,26 @@
 import Task from '../model/taskModel'
 import { Request, Response, NextFunction } from 'express';
+import {publishToQueue} from '../services/rabbitmq.js'
+import socket from '../app'
 
 
 
-
-export const createTask = async (req: Request, res: Response, next: NextFunction) => {
+export const createTask = async (req: Request, res: Response) => {
     try{
-        console.log(req.user)
+
+        const newTask = {
+            userId: req.user?._id,
+            reporter: req.body.reporter,
+            assignee: req.body.assignee,
+            title: req.body.title,
+            description: req.body.description,
+            priority: req.body.priority
+        }
+        await publishToQueue('tasks', JSON.stringify(newTask))
         const task = await Task.create(
-            {
-                userId: req.user?._id,
-                reporter: req.body.reporter,
-                assignee: req.body.assignee,
-                title: req.body.title,
-                description: req.body.description,
-                priority: req.body.priority
-            }
+            newTask
         );
+        socket.io.emit('Task created', task)
         res.status(201).json({
           status: 'Successful',
           message: 'Task created',
@@ -30,7 +34,7 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
 } 
 
 
-export const updateTask = async (req: Request, res: Response, next: NextFunction) => {
+export const updateTask = async (req: Request, res: Response) => {
     try{
 
         const task = await Task.findOneAndUpdate(
@@ -58,8 +62,9 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
 } 
 
 
-export const deleteTask = async (req: Request, res: Response, next: NextFunction) => {
-      const task = await Task.findOneAndDelete({ _id: req.params.id });
+export const deleteTask = async (req: Request, res: Response) => {
+    const userId = req.user?._id;  
+    const task = await Task.findOneAndDelete({ _id: req.params.id, userId });
       if (!task) {
         return res.status(400).json({
             "message": 'Task not found!',

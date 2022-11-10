@@ -6,12 +6,20 @@ import logger from 'morgan';
 import dotenv from 'dotenv';
 import { connectDB } from './DB/memory';
 import { config } from './config/config';
+import { Server } from "socket.io";
+import http from "http";
 
 import indexRouter from './routes/index';
 
 dotenv.config();
 
-var app = express();
+const app = express();
+
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+  /**options */
+});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
@@ -53,4 +61,4 @@ app.use(function(err:HttpError, req:Request, res:Response, next:NextFunction) {
   res.render('error');
 });
 
-export default app;
+export default {app, httpServer, io};

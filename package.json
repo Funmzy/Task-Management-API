@@ -5,9 +5,11 @@
   "scripts": {
     "start": "node ./bin/www",
     "start:dev": "nodemon ./bin/www",
-    "compile:watch": "yarn tsc -w"
+    "compile:watch": "yarn tsc -w",
+    "receiver": "nodemon ./src/receiver.js"
   },
   "dependencies": {
+    "@types/amqplib": "^0.8.2",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.14",
@@ -16,6 +18,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.3",
     "@types/validator": "^13.7.10",
+    "amqplib": "^0.10.3",
     "bcrypt": "^5.1.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -28,6 +31,7 @@
     "mongoose": "^6.7.2",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.20",
+    "socket.io": "^4.5.3",
     "tsc": "^2.0.4",
     "typescript": "^4.8.4",
     "validator": "^13.7.0"
