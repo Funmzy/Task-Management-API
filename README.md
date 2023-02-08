@@ -1,4 +1,4 @@
-# Bodsquare-Test
+# Task-Management API
 ## Node, Express, MongoDB, Typescript, JavaScript, RabbitMQ, Socket.io
 
 API that can authenticate user with email and password (Mock data)
@@ -10,7 +10,7 @@ When a task is created, it should be queued on Rabbitmq before being created in 
 ##
 
 - [API URL](https://localhost:3000/api/v1)
-- [github repo](https://github.com/Funmzy/bodsquare-test)
+- [github repo](https://github.com/Funmzy/Task-Management-API)
 
 ## Tech Stack
 
